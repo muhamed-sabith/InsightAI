@@ -1,23 +1,44 @@
 import pandas as pd 
 import streamlit as st
-from openai import OpenAI
-import os
-from dotenv import load_dotenv
-
-load_dotenv()
-client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+import ollama
 
 st.title("InsightAI App")
-uploaded_file = st.file_uploader("upload  csv file", type="csv")
+
+uploaded_file = st.file_uploader("upload csv file", type="csv")
 
 if uploaded_file:
     df = pd.read_csv(uploaded_file)
     st.write(df.head())
-    prompt = f"Give a quick summary of this data: \n  {df.head().to_csv(index=False)}"
-    resp = client.chat.completions.create(
-        model="gpt-4",
-        messages = [{"role": "user","content": prompt}]
+
+    # same prompt style as your original code
+    prompt = f"""
+You are a professional data analyst.
+
+Analyze the dataset below and write a detailed, human-like report.
+
+Dataset sample:
+{df.head().to_csv(index=False)}
+
+Instructions:
+- Describe what the dataset is about
+- Explain each column in simple terms
+- Mention patterns or observations
+- Include small examples using the data (like explaining one row)
+- Write in paragraph style (not bullet points)
+- Make it easy to understand like a report
+
+Generate a detailed summary.
+"""
+
+    # 🔥 Ollama replaces OpenAI here
+    response = ollama.chat(
+        model="llama3",
+        messages=[
+            {"role": "user", "content": prompt}
+        ]
     )
 
     st.subheader("AI Summary")
-    st.wrirte(resp.choices[0].message.content)
+
+    # ✅ fixed typo also (st.write)
+    st.write(response["message"]["content"])
