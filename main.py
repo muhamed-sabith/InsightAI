@@ -96,13 +96,13 @@ if uploaded_file:
     Write in paragraph style.
     """
 
-    if st.button("Generate Dataset Summary"):
-        with st.spinner("Generating summary..."):
-            auto_response = ollama.chat(
-                model="llama3",
-                messages=[{"role": "user", "content": auto_prompt}]
-            )
-            st.write(auto_response["message"]["content"])
+    with st.spinner("Generating AI report..."):
+        auto_response = ollama.chat(
+            model="llama3",
+            messages=[{"role": "user", "content": auto_prompt}]
+        )
+
+        st.markdown(auto_response["message"]["content"])
 
     # -----------------------------
     # 6. AI CUSTOM QUESTION
