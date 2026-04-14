@@ -92,7 +92,6 @@ if uploaded_file:
     - Explain columns
     - Mention patterns
     - Give small examples
-    - Explain how important features affect the target
     - Provide recomendations or sugesstions based on the analysis
 
     Write in detailed  paragraph style with well structured headings .
